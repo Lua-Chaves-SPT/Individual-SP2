@@ -21,7 +21,6 @@ async function carregarGeneros() {
         selectGenero.innerHTML = '<option value="">Selecione um gênero</option>';
 
         generos.forEach(genero => {
-            // Guarda o nome do gênero com chave sendo o ID
             mapaGeneros[genero.id] = genero.nome;
 
             const option = document.createElement('option');
@@ -35,7 +34,6 @@ async function carregarGeneros() {
         selectGenero.innerHTML = '<option value="">Erro ao carregar gêneros</option>';
     }
 }
-
 
 async function carregarLivros() {
     const containerLista = document.getElementById('listaLivros');
@@ -57,7 +55,7 @@ async function carregarLivros() {
             return;
         }
 
-        containerLista.innerHTML = ''; // Limpa a lista
+        containerLista.innerHTML = ''; 
 
         livros.forEach(livro => {
             const nomeGenero = mapaGeneros[livro.generoId] || `Gênero #${livro.generoId}`;
@@ -65,7 +63,10 @@ async function carregarLivros() {
             const card = document.createElement('div');
             card.className = 'item-livro';
             card.innerHTML = `
-                <h3>${escapeHTML(livro.titulo)}</h3>
+                <div class="card-header">
+                    <h3>${escapeHTML(livro.titulo)}</h3>
+                    <button class="btn-deletar" onclick="deletarLivro(${livro.id})">Excluir</button>
+                </div>
                 <p><strong>Autor:</strong> ${escapeHTML(livro.autor)}</p>
                 <p><strong>Editora:</strong> ${escapeHTML(livro.editora)}</p>
                 <p><strong>Publicação:</strong> ${formatarData(livro.dataPublicacao)} | <strong>Páginas:</strong> ${livro.quantidadePaginas}</p>
@@ -160,4 +161,28 @@ function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, 
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
+}
+
+async function deletarLivro(id) {
+    if (!confirm('Tem certeza de que deseja excluir este livro?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/livros/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.status === 204) {
+            exibirMensagem('Livro removido com sucesso!', 'sucesso');
+            await carregarLivros();
+        } else if (response.status === 404) {
+            exibirMensagem('Livro não encontrado no banco de dados.', 'erro');
+        } else {
+            exibirMensagem('Erro ao tentar excluir o livro.', 'erro');
+        }
+    } catch (erro) {
+        console.error('Erro na requisição DELETE:', erro);
+        exibirMensagem('Não foi possível conectar ao servidor.', 'erro');
+    }
 }
