@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro e Listagem de Livros</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="layout-container">
+        <div class="card-container">
+            <h2>Cadastro de Livro</h2>
+            
+            <form id="formLivro">
+                <div class="form-group">
+                    <label for="titulo">Título do Livro:*</label>
+                    <input type="text" id="titulo" required placeholder="Ex: Dom Casmurro">
+                </div>
+
+                <div class="form-group">
+                    <label for="autor">Nome do Autor:*</label>
+                    <input type="text" id="autor" required placeholder="Ex: Machado de Assis">
+                </div>
+
+                <div class="form-group">
+                    <label for="editora">Editora:*</label>
+                    <input type="text" id="editora" required placeholder="Ex: Companhia das Letras">
+                </div>
+
+                <div class="form-group">
+                    <label for="dataPublicacao">Data de Publicação:*</label>
+                    <input type="date" id="dataPublicacao" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paginas">Quantidade de Páginas:*</label>
+                    <input type="number" id="paginas" min="1" required placeholder="Ex: 256">
+                </div>
+
+                <div class="form-group">
+                    <label for="genero">Gênero:*</label>
+                    <select id="genero" required>
+                        <option value="">Carregando gêneros...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Formato:*</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="formato" value="FISICO" checked> Físico</label>
+                        <label><input type="radio" name="formato" value="DIGITAL"> E-book</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Opções Adicionais:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="possuiEdicaoEspecial"> Edição de Colecionador</label>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnSalvar">Cadastrar Livro</button>
+            </form>
+
+            <div id="mensagem" class="mensagem"></div>
+        </div>
+
+        <div class="card-container listagem-container">
+            <h2>Livros Cadastrados</h2>
+            <div id="listaLivros" class="lista-livros">
+                <p class="mensagem-vazia">Carregando livros...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
